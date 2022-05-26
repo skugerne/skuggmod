@@ -250,9 +250,9 @@ local function GetModuleEffectsData(moduleList, level, chassis)
 		end
 	end
 	
-	local levelFunction = chassisDefs[chassis or 1].levelDefs[math.min(chassisDefs[chassis or 1].maxNormalLevel, level or 1)].chassisApplicationFunction
+	local levelFunction = chassisDefs[chassis or 1].chassisApplicationFunction
 	if levelFunction then
-		levelFunction(moduleByDefID, moduleEffectData)
+		levelFunction(level, moduleByDefID, moduleEffectData)
 	end
 	
 	return moduleEffectData
