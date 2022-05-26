@@ -1315,6 +1315,7 @@ local chassisDefs = {
 				chassisApplicationFunction = function (modules, sharedData)
 					sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 5
 					sharedData.drones = (sharedData.drones or 0) + 1
+					sharedData.healthBonus = (sharedData.healthBonus or 0) + 600
 				end,
 				morphUnitDefFunction = function(modulesByDefID)
 					return UnitDefNames["dynassault0"].id
@@ -1327,6 +1328,7 @@ local chassisDefs = {
 				chassisApplicationFunction = function (modules, sharedData)
 					sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 5
 					sharedData.drones = (sharedData.drones or 0) + 1
+					sharedData.healthBonus = (sharedData.healthBonus or 0) + 1200
 				end,
 				morphUnitDefFunction = function(modulesByDefID)
 					return UnitDefNames["dynassault1_" .. GetAssaultCloneModulesString(modulesByDefID)].id
@@ -1348,6 +1350,7 @@ local chassisDefs = {
 				chassisApplicationFunction = function (modules, sharedData)
 					sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 5
 					sharedData.drones = (sharedData.drones or 0) + 2
+					sharedData.healthBonus = (sharedData.healthBonus or 0) + 1800
 				end,
 				morphUnitDefFunction = function(modulesByDefID)
 					return UnitDefNames["dynassault2_" .. GetAssaultCloneModulesString(modulesByDefID)].id
@@ -1369,6 +1372,7 @@ local chassisDefs = {
 				chassisApplicationFunction = function (modules, sharedData)
 					sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 5
 					sharedData.drones = (sharedData.drones or 0) + 2
+					sharedData.healthBonus = (sharedData.healthBonus or 0) + 2400
 				end,
 				morphUnitDefFunction = function(modulesByDefID)
 					return UnitDefNames["dynassault3_" .. GetAssaultCloneModulesString(modulesByDefID)].id
@@ -1395,6 +1399,7 @@ local chassisDefs = {
 					sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 5
 					sharedData.drones = (sharedData.drones or 0) + 2
 					sharedData.droneheavyslows = (sharedData.droneheavyslows or 0) + 1
+					sharedData.healthBonus = (sharedData.healthBonus or 0) + 3200
 				end,
 				morphUnitDefFunction = function(modulesByDefID)
 					return UnitDefNames["dynassault4_" .. GetAssaultCloneModulesString(modulesByDefID)].id
@@ -1421,6 +1426,7 @@ local chassisDefs = {
 					sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 5
 					sharedData.drones = (sharedData.drones or 0) + 3
 					sharedData.droneheavyslows = (sharedData.droneheavyslows or 0) + 1
+					sharedData.healthBonus = (sharedData.healthBonus or 0) + 4000
 				end,
 				morphUnitDefFunction = function(modulesByDefID)
 					return UnitDefNames["dynassault5_" .. GetAssaultCloneModulesString(modulesByDefID)].id
