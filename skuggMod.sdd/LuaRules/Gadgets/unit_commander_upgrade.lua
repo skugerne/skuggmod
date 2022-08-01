@@ -333,17 +333,6 @@ local function Upgrades_CreateUpgradedUnit(defName, x, y, z, face, unitTeam, isB
 		unitCreatedCloakShield = true
 	end
 	
-	unitCreatedWeaponNums = {}
-	if moduleEffectData.weapon1 then
-		unitCreatedWeaponNums[moduleEffectData.weapon1] = 1
-	end
-	if moduleEffectData.weapon2 then
-		unitCreatedWeaponNums[moduleEffectData.weapon2] = 2
-	end
-	if moduleEffectData.shield then
-		unitCreatedWeaponNums[moduleEffectData.shield] = 3
-	end
-	
 	interallyCreatedUnit = true
 	
 	internalCreationUpgradeDef = upgradeDef
@@ -362,7 +351,6 @@ local function Upgrades_CreateUpgradedUnit(defName, x, y, z, face, unitTeam, isB
 	unitCreatedCloak = nil
 	unitCreatedJammingRange = nil
 	unitCreatedCloakShield = nil
-	unitCreatedWeaponNums = nil
 	
 	if not unitID then
 		return false
@@ -718,13 +706,6 @@ end
 
 function GG.Upgrades_UnitCloakShieldDef(unitID)
 	return (unitCreatedCloakShield or Spring.GetUnitRulesParam(unitID, "comm_area_cloak")) and commanderCloakShieldDef
-end
-
-function GG.Upgrades_WeaponNumMap(num)
-	if unitCreatedWeaponNums then
-		return unitCreatedWeaponNums[num]
-	end
-	return false
 end
 
 -- GG.Upgrades_GetUnitCustomShader is up in unsynced

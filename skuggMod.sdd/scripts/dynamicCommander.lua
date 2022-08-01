@@ -89,8 +89,7 @@ end
 -- parameter is a number >= 1, up to however many weapon definitions are associated with the commander type
 -- called quite often on all possible weapon definitions (for the commander type in question) in order to find out which ones are equipped
 local function GetWeapon(num)
-	Spring.Log("GetWeapon", LOG.WARNING, "think about unitID " .. (unitID or "nil"))
-	local retNum = GG.Upgrades_WeaponNumMap(unitID, num) or weaponNumMap[num]
+	local retNum = weaponNumMap[num]
 	if retNum then
 		Spring.Log("GetWeapon", LOG.WARNING, "weapon num " .. num .. " was already known with value " .. retNum .. " for unitID " .. unitID)
 		return retNum
