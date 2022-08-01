@@ -173,6 +173,7 @@ local function RestorePose()
 end
 
 function script.Create()
+	Spring.Log("dynknight.lua Create", LOG.WARNING, "creating a commander with unitID " .. (unitID or "nil"))
 	Move(flareL, y_axis, -2)
 	Move(flareR, y_axis, -2)
 	Turn(flareL, x_axis, rightAngle)
@@ -290,6 +291,7 @@ function script.Shot(num)
 end
 	
 function script.FireWeapon(num)
+	Spring.Log("dynknight.lua FireWeapon", LOG.WARNING, "fire weapon " .. num .. " on a commander with unitID " .. (unitID or "nil"))
 	local weaponNum = dyncomm.GetWeapon(num)
 	if weaponNum == 1 then
 		dyncomm.EmitWeaponFireSfx(flareL, num)

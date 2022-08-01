@@ -513,6 +513,7 @@ function script.AimWeapon(num, heading, pitch)
 end
 
 function script.FireWeapon(num)
+	Spring.Log("dynstrike.lua FireWeapon", LOG.WARNING, "fire weapon " .. num .. " on a commander with unitID " .. (unitID or "nil"))
 	local weaponNum = dyncomm.GetWeapon(num)
 	if weaponNum == 1 then
 		dyncomm.EmitWeaponFireSfx(Muzzle, num)
@@ -577,6 +578,7 @@ end
 -- Creation and Death
 
 function script.Create()
+	Spring.Log("dynstrike.lua Create", LOG.WARNING, "creating a commander with unitID " .. (unitID or "nil"))
     local map = Spring.GetUnitPieceMap(unitID);
     local offsets = constructSkeleton(unitID,map.Scene, {0,0,0});
     

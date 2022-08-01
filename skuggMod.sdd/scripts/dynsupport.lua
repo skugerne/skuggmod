@@ -357,7 +357,9 @@ local function MotionControl()
 	end
 end
 
+-- called when a commander is created or upgraded
 function script.Create()
+	Spring.Log("dynsupport.lua Create", LOG.WARNING, "creating a commander with unitID " .. (unitID or "nil"))
 	dyncomm.Create()
 	--alert to dirt
 	Turn(armhold, x_axis, math.rad(-45), math.rad(250)) --upspring
@@ -491,6 +493,7 @@ function script.AimWeapon(num, heading, pitch)
 end
 
 function script.FireWeapon(num)
+	Spring.Log("dynsupport.lua FireWeapon", LOG.WARNING, "fire weapon " .. num .. " on a commander with unitID " .. (unitID or "nil"))
 	dyncomm.EmitWeaponFireSfx(flare, num)
 end
 

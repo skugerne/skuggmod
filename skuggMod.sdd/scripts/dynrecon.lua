@@ -332,6 +332,7 @@ local function MotionControl()
 end
 
 function script.Create()
+	Spring.Log("dynrecon.lua Create", LOG.WARNING, "creating a commander with unitID " .. (unitID or "nil"))
 	dyncomm.Create()
 	sizeSpeedMult = (1 - (1 - dyncomm.GetPace())/2.5) *SPEED_MULT
 	--alert to dirt
@@ -466,6 +467,7 @@ function script.QueryWeapon(num)
 end
 
 function script.FireWeapon(num)
+	Spring.Log("dynrecon.lua FireWeapon", LOG.WARNING, "fire weapon " .. num .. " on a commander with unitID " .. (unitID or "nil"))
 	dyncomm.EmitWeaponFireSfx(flare, num)
 end
 

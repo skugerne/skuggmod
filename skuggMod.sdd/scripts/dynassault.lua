@@ -171,6 +171,8 @@ end
 
 
 function script.Create()
+	Spring.Log("dynassault.lua Create", LOG.WARNING, "creating a commander with unitID " .. (unitID or "nil"))
+
 	dyncomm.Create()
 	Hide(rcannon_flare)
 	Hide(lnanoflare)
@@ -264,6 +266,7 @@ function script.AimWeapon(num, heading, pitch)
 end
 
 function script.FireWeapon(num)
+	Spring.Log("dynassault.lua FireWeapon", LOG.WARNING, "fire weapon " .. num .. " on a commander with unitID " .. (unitID or "nil"))
 	local weaponNum = dyncomm.GetWeapon(num)
 	if weaponNum == 1 then
 		dyncomm.EmitWeaponFireSfx(rcannon_flare, num)
