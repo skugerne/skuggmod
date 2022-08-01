@@ -311,6 +311,8 @@ end
 local function Upgrades_CreateUpgradedUnit(defName, x, y, z, face, unitTeam, isBeingBuilt, upgradeDef)
 	-- Calculate Module effects
 	local moduleEffectData = GetModuleEffectsData(upgradeDef.moduleList, upgradeDef.level, upgradeDef.chassis)
+
+	Spring.Log("Upgrades_CreateUpgradedUnit", LOG.WARNING, "think about an upgrade for unitID " .. (unitID or "nil"))
 	
 	-- Create Unit, set appropriate global data first
 	-- These variables are set such that other gadgets can notice the effect

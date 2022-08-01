@@ -20,21 +20,23 @@ local isManual = {}
 local shields = {}
 local unitWeaponNames = {} -- Unit weapons by name
 local wepTable = UnitDefs[unitDefID].weapons
+Spring.Log("dynamicCommander.lua", LOG.WARNING, "loading for unitID", unitID)
+Spring.Log("dynamicCommander.lua", LOG.WARNING, "loading for unitDefID", unitDefID)
+
+-- loop over all possible weapons for the comm in question
 for num = 1, #wepTable do
-	Spring.Log("dynamicCommander.lua", LOG.INFO, "startup num: ", num)
 	local wd = WeaponDefs[wepTable[num].weaponDef]
 	if wd.type == "Shield" then
 		shields[#shields + 1] = num
 	end
-	Spring.Log("dynamicCommander.lua", LOG.INFO, "startup wd.name: ", wd.name)
+	-- convert a name like 0_commweapon_peashooter to commweapon_peashooter
 	local weaponName = string.sub(wd.name, (string.find(wd.name,"commweapon") or 0), 100)
-	Spring.Log("dynamicCommander.lua", LOG.INFO, "startup weaponName: ", weaponName)
 	if weaponName then
 		if unitWeaponNames[weaponName] then
-			Spring.Log("dynamicCommander.lua", LOG.INFO, "path 1")
+			Spring.Log("dynamicCommander.lua", LOG.WARNING, "weapon named " .. weaponName .. " gets num2 " .. num)
 			unitWeaponNames[weaponName].num2 = num
 		else
-			Spring.Log("dynamicCommander.lua", LOG.INFO, "path 2")
+			Spring.Log("dynamicCommander.lua", LOG.WARNING, "weapon named " .. weaponName .. " gets num " .. num .. " weaponDefID " .. wd.id)
 			unitWeaponNames[weaponName] = {
 				num = num,
 				weaponDefID = wd.id,
@@ -84,12 +86,17 @@ local function GetScale()
 	return scaleMult or CalculateScaleMult()
 end
 
+-- parameter is a number >= 1, up to however many weapon definitions are associated with the commander type
+-- called quite often on all possible weapon definitions (for the commander type in question) in order to find out which ones are equipped
 local function GetWeapon(num)
+	Spring.Log("GetWeapon", LOG.WARNING, "think about unitID " .. (unitID or "nil"))
 	local retNum = GG.Upgrades_WeaponNumMap(unitID, num) or weaponNumMap[num]
 	if retNum then
+		Spring.Log("GetWeapon", LOG.WARNING, "weapon num " .. num .. " was already known with value " .. retNum .. " for unitID " .. unitID)
 		return retNum
 	end
 	if not weaponsInitialized then
+		Spring.Log("GetWeapon", LOG.WARNING, "weaponNumMap not initialized for commander unitID " .. unitID)
 		local tempWeapon1 = Spring.GetUnitRulesParam(unitID, "comm_weapon_num_1")
 		local tempWeapon2 = Spring.GetUnitRulesParam(unitID, "comm_weapon_num_2")
 		local tempShield = Spring.GetUnitRulesParam(unitID, "comm_shield_num")
@@ -101,6 +108,7 @@ local function GetWeapon(num)
 			return 3
 		end
 	end
+	-- the weapon was not equipped
 	return false
 end
 
@@ -157,11 +165,14 @@ local function GetCegTable(wd)
 	return cegs
 end
 
+-- called after a commander is created or upgraded
 local function UpdateWeapons(weaponName1, weaponName2, shieldName, rangeMult, damageMult)
 	local weaponDef1 = weaponName1 and unitWeaponNames[weaponName1]
 	local weaponDef2 = weaponName2 and unitWeaponNames[weaponName2]
 	local shieldDef = shieldName and unitWeaponNames[shieldName]
-	
+
+	Spring.Log("UpdateWeapons", LOG.WARNING, "for unitID " .. unitID .. " we have weaponName1 " .. (weaponName1 or "nil") .. ", weaponName2 " .. (weaponName2 or "nil") .. ", shieldName " .. (shieldName or "nil"))
+
 	weapon1 = weaponDef1 and weaponDef1.num
 	weapon2 = weaponDef2 and (weaponDef2.num2 or weaponDef2.num)
 	shield  = shieldDef and shieldDef.num
