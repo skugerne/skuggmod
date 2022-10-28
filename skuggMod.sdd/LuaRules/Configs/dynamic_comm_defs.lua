@@ -614,6 +614,20 @@ local moduleDefs = {
 		end
 	},
 	{
+		name = "module_radarnet_plusplus",
+		humanName = "Field Radar Plus Plus",
+		description = "Field Radar - Attaches an advanced radar system.",
+		image = moduleImagePath .. "module_fieldradar.png",
+		limit = 1,
+		cost = 400 * COST_MULT,
+		requireOneOf = {"module_radarnet"},
+		requireLevel = 5,
+		slotType = "module",
+		applicationFunction = function (modules, sharedData)
+			sharedData.radarRange = 3600
+		end
+	},
+	{
 		name = "module_personal_cloak",
 		humanName = "Personal Cloak",
 		description = "Personal Cloak - A personal cloaking device. Reduces speed by 8.",
@@ -736,7 +750,7 @@ local moduleDefs = {
 	{
 		name = "module_heavy_armor",
 		humanName = "High Density Plating",
-		description = "High Density Plating - Provides " .. 1600*HP_MULT .. " health but reduces speed by 3. " ..
+		description = "High Density Plating - Provides " .. 1800*HP_MULT .. " health but reduces speed by 3. " ..
 		"Limit: 8, Requires Ablative Armour Plates",
 		image = moduleImagePath .. "module_heavy_armor.png",
 		limit = 8,
@@ -745,8 +759,24 @@ local moduleDefs = {
 		requireLevel = 2,
 		slotType = "module",
 		applicationFunction = function (modules, sharedData)
-			sharedData.healthBonus = (sharedData.healthBonus or 0) + 1600*HP_MULT
+			sharedData.healthBonus = (sharedData.healthBonus or 0) + 1800*HP_MULT
 			sharedData.speedMod = (sharedData.speedMod or 0) - 3
+		end
+	},
+	{
+		name = "module_plot_armor",
+		humanName = "Plot Armor",
+		description = "Plot Armor - Provides " .. 1200*HP_MULT .. " health and adds 5 autorepair, without effecting speed. " ..
+		"Limit: 8, Requires Ablative Armour Plates",
+		image = moduleImagePath .. "module_plot_armor.png",
+		limit = 8,
+		cost = 800 * COST_MULT,
+		requireOneOf = {"module_ablative_armor"},
+		requireLevel = 5,
+		slotType = "module",
+		applicationFunction = function (modules, sharedData)
+			sharedData.healthBonus = (sharedData.healthBonus or 0) + 1200*HP_MULT
+			sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 5
 		end
 	},
 	{
@@ -789,6 +819,50 @@ local moduleDefs = {
 		applicationFunction = function (modules, sharedData)
 			sharedData.rangeMult = (sharedData.rangeMult or 1) + 0.075
 			sharedData.speedMod = (sharedData.speedMod or 0) - 1
+		end
+	},
+	{
+		name = "module_dmg_booster_plusplus",
+		humanName = "Damage Booster Pro",
+		description = "Damage Booster Pro - Increases damage by 15% but reduces speed by 2. Limit: 8",
+		image = moduleImagePath .. "module_dmg_booster_pro.png",
+		limit = 8,
+		cost = 350 * COST_MULT,
+		requireLevel = 5,
+		slotType = "module",
+		applicationFunction = function (modules, sharedData)
+			-- Damage boost is applied via clone swapping
+			sharedData.damageMult = (sharedData.damageMult or 1) + 0.15
+			sharedData.speedMod = (sharedData.speedMod or 0) - 2
+		end
+	},
+	{
+		name = "module_high_power_servos_plusplus",
+		humanName = "Pro Max Servos",
+		description = "Pro Max Servos - Increases speed by 5 but reduces health by 200. Limit: 8",
+		image = moduleImagePath .. "module_pro_max_servos.png",
+		limit = 8,
+		cost = 250 * COST_MULT,
+		requireLevel = 5,
+		slotType = "module",
+		applicationFunction = function (modules, sharedData)
+			sharedData.speedMod = (sharedData.speedMod or 0) + 5
+			sharedData.healthBonus = (sharedData.healthBonus or 0) - 200*HP_MULT
+		end
+	},
+	{
+		name = "module_adv_targeting_plusplus",
+		humanName = "Pro Max Targeting System",
+		description = "Pro Max Targeting System - Increases range by 10% but reduces speed by 1 and health by 100. Limit: 8",
+		image = moduleImagePath .. "module_pro_max_targeting.png",
+		limit = 8,
+		cost = 250 * COST_MULT,
+		requireLevel = 5,
+		slotType = "module",
+		applicationFunction = function (modules, sharedData)
+			sharedData.rangeMult = (sharedData.rangeMult or 1) + 0.1
+			sharedData.speedMod = (sharedData.speedMod or 0) - 1
+			sharedData.healthBonus = (sharedData.healthBonus or 0) - 100*HP_MULT
 		end
 	},
 	{
