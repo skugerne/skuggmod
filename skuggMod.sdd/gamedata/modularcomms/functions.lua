@@ -21,6 +21,7 @@ mapWeaponToCEG = {
 
 
 function DynamicApplyWeapon(unitDef, weapon, slot)
+	Spring.Log("functions.lua DynamicApplyWeapon", LOG.WARNING, "processing a weapon " .. weapon)
 	if not weapons[weapon] then
 		Spring.Echo("Cannont find weapon", weapon)
 	end
@@ -55,6 +56,7 @@ function DynamicApplyWeapon(unitDef, weapon, slot)
 end
 
 function ApplyWeapon(unitDef, weapon, replace, forceslot)
+	Spring.Log("functions.lua ApplyWeapon", LOG.WARNING, "processing a weapon " .. weapon)
 	weapons[weapon].customparams = weapons[weapon].customparams or {}
 	local wcp = weapons[weapon].customparams
 	local slot = tonumber(wcp.slot) or 5

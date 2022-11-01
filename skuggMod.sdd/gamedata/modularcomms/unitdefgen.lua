@@ -151,6 +151,7 @@ end
 commDefs = {} --holds precedurally generated comm defs
 
 local function ProcessComm(name, config)
+	Spring.Log("unitdefgen.lua ProcessComm", LOG.WARNING, "processing a commander " .. name)
 	if config.chassis and UnitDefs[config.chassis] then
 		Spring.Log("gamedata/modularcomms/unitdefgen.lua", "debug", "\tModularComms: Processing comm: " .. name)
 		commDefs[name] = CopyTable(UnitDefs[config.chassis], true)

@@ -402,6 +402,7 @@ local copy = {
 	},
 }
 
+-- this appears to be where the UnitDefs object is taught about the dynamic commanders (plus other commanders)
 for sourceName, copyTable in pairs(copy) do
 	for cloneName, stats in pairs(copyTable) do
 		-- some further modification
