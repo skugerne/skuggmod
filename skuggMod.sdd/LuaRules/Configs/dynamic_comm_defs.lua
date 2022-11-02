@@ -948,6 +948,11 @@ local function GetAssaultCloneModulesString(modulesByDefID)
 		(modulesByDefID[moduleDefNames.commweapon_areashield] or 0)
 end
 
+local function GetRiotCloneModulesString(modulesByDefID)
+	return (modulesByDefID[moduleDefNames.commweapon_personal_shield] or 0) ..
+		(modulesByDefID[moduleDefNames.commweapon_areashield] or 0)
+end
+
 local function GetStrikeCloneModulesString(modulesByDefID)
 	return (modulesByDefID[moduleDefNames.commweapon_personal_shield] or 0) ..
 		(modulesByDefID[moduleDefNames.commweapon_areashield] or 0)
@@ -965,11 +970,82 @@ local morphCosts = {
 	100,
 	650,
 	200,
+	250,
 	300,
+	350,
+	400,
+	450,
+	500,
 }
 
+-- assign costs for levels that exceed the table above
 local function extraLevelCostFunction(level)
-	return (level - 2) * 100 * COST_MULT
+	return (level * 100 - morphCosts[#morphCosts]) * COST_MULT   -- starts at 600 for level 11, climbs from there
+end
+
+local maxCommLevel = #morphCosts  -- not really max, but the point where freebies stop
+local function levelDefGenerator(commname, cloneModulesStringFunc)
+	local res = {
+		[0] = {
+			morphBuildPower = 10,
+			morphBaseCost = 0,
+			morphUnitDefFunction = function(modulesByDefID)
+				return UnitDefNames[commname .. "0"].id
+			end,
+			upgradeSlots = {},
+		}
+	}
+
+	for i = 1, maxCommLevel do
+		Spring.Echo("Do idx " .. i .. " for comm " .. commname .. ".")
+		res[i] = {
+			morphBuildPower = 5 + math.ceil(i/2)*5,
+			morphBaseCost = morphCosts[i],
+			morphUnitDefFunction = function(modulesByDefID)
+				return UnitDefNames[commname .. math.ceil(i/2) .. "_" .. cloneModulesStringFunc(modulesByDefID)].id
+			end
+		}
+
+		if i < 3 then
+			res[i].upgradeSlots = {
+				{
+					defaultModule = moduleDefNames.nullmodule,
+					slotAllows = "module",
+				},
+				{
+					defaultModule = moduleDefNames.nullmodule,
+					slotAllows = "module",
+				},
+			}
+		else
+			res[i].upgradeSlots = {
+				{
+					defaultModule = moduleDefNames.nullmodule,
+					slotAllows = "module",
+				},
+				{
+					defaultModule = moduleDefNames.nullmodule,
+					slotAllows = "module",
+				},
+				{
+					defaultModule = moduleDefNames.nullmodule,
+					slotAllows = "module",
+				},
+			}
+		end
+	end
+
+	-- mark slots for weapons
+	res[1].upgradeSlots[1] = {
+		defaultModule = moduleDefNames.commweapon_beamlaser,
+		slotAllows = "basic_weapon",
+	}
+	res[3].upgradeSlots[1] = {
+		defaultModule = moduleDefNames.commweapon_beamlaser,
+		slotAllows = {"adv_weapon", "basic_weapon"},
+	}
+
+	return res
 end
 
 local chassisDefs = {
@@ -978,9 +1054,10 @@ local chassisDefs = {
 		humanName = "Strike",
 		baseUnitDef = UnitDefNames and UnitDefNames["dynstrike0"].id,
 		extraLevelCostFunction = extraLevelCostFunction,
-		maxNormalLevel = 5,
+		maxNormalLevel = maxCommLevel,
 		secondPeashooter = true,
 		chassisApplicationFunction = function (level, modules, sharedData)
+			Spring.Echo("Apply level-up function to Strike lvl " .. level .. ".")
 			if level < 2 then
 				sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 5
 			elseif level == 2 then
@@ -992,241 +1069,35 @@ local chassisDefs = {
 			elseif level >= 5 then
 				sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 35
 			end
-			-- TODO: damageMult
+			sharedData.speedMod = (sharedData.speedMod or 0) + 1
+			sharedData.healthBonus = (sharedData.healthBonus or 0) + 200
+			sharedData.damageMult = (sharedData.damageMult or 1) + 0.025
 		end,
-		levelDefs = {
-			[0] = {
-				morphBuildPower = 10,
-				morphBaseCost = 0,
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynstrike0"].id
-				end,
-				upgradeSlots = {},
-			},
-			[1] = {
-				morphBuildPower = 10,
-				morphBaseCost = morphCosts[1],
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynstrike1_" .. GetStrikeCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.commweapon_beamlaser,
-						slotAllows = "basic_weapon",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-			[2] = {
-				morphBuildPower = 15,
-				morphBaseCost = morphCosts[2] * COST_MULT,
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynstrike2_" .. GetStrikeCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-			[3] = {
-				morphBuildPower = 20,
-				morphBaseCost = morphCosts[3] * COST_MULT,
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynstrike3_" .. GetStrikeCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.commweapon_beamlaser,
-						slotAllows = {"adv_weapon", "basic_weapon"},
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-			[4] = {
-				morphBuildPower = 25,
-				morphBaseCost = morphCosts[4] * COST_MULT,
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynstrike4_" .. GetStrikeCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-			[5] = {
-				morphBuildPower = 30,
-				morphBaseCost = morphCosts[5] * COST_MULT,
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynstrike5_" .. GetStrikeCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-		}
+		levelDefs = levelDefGenerator("dynstrike", GetStrikeCloneModulesString)
 	},
 	{
 		name = "recon",
 		humanName = "Recon",
 		baseUnitDef = UnitDefNames and UnitDefNames["dynrecon0"].id,
 		extraLevelCostFunction = extraLevelCostFunction,
-		maxNormalLevel = 5,
+		maxNormalLevel = maxCommLevel,
 		chassisApplicationFunction = function (level, modules, sharedData)
+			Spring.Echo("Apply level-up function to Recon lvl " .. level .. ".")
+			sharedData.speedMod = (sharedData.speedMod or 0) + 1
 			sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 5
-			-- TODO: rangeMult
+			sharedData.healthBonus = (sharedData.healthBonus or 0) + 100
+			sharedData.rangeMult = (sharedData.rangeMult or 1) + 0.02
 		end,
-		levelDefs = {
-			[0] = {
-				morphBuildPower = 10,
-				morphBaseCost = 0,
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynrecon0"].id
-				end,
-				upgradeSlots = {},
-			},
-			[1] = {
-				morphBuildPower = 10,
-				morphBaseCost = morphCosts[1],
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynrecon1_" .. GetReconCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.commweapon_beamlaser,
-						slotAllows = "basic_weapon",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-			[2] = {
-				morphBuildPower = 15,
-				morphBaseCost = morphCosts[2] * COST_MULT,
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynrecon2_" .. GetReconCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-			[3] = {
-				morphBuildPower = 20,
-				morphBaseCost = morphCosts[3] * COST_MULT,
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynrecon3_" .. GetReconCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.commweapon_beamlaser,
-						slotAllows = "adv_weapon",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-			[4] = {
-				morphBuildPower = 25,
-				morphBaseCost = morphCosts[4] * COST_MULT,
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynrecon4_" .. GetReconCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-			[5] = {
-				morphBuildPower = 30,
-				morphBaseCost = morphCosts[5] * COST_MULT,
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynrecon5_" .. GetReconCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-		}
+		levelDefs = levelDefGenerator("dynrecon", GetReconCloneModulesString)
 	},
 	{
 		name = "support",
 		humanName = "Engineer",
 		baseUnitDef = UnitDefNames and UnitDefNames["dynsupport0"].id,
 		extraLevelCostFunction = extraLevelCostFunction,
-		maxNormalLevel = 5,
+		maxNormalLevel = maxCommLevel,
 		chassisApplicationFunction = function (level, modules, sharedData)
+			Spring.Echo("Apply level-up function to Engineer lvl " .. level .. ".")
 			if level == 1 then
 				sharedData.bonusBuildPower = (sharedData.bonusBuildPower or 0) + 2
 			elseif level == 2 then
@@ -1238,124 +1109,20 @@ local chassisDefs = {
 			elseif level >= 5 then
 				sharedData.bonusBuildPower = (sharedData.bonusBuildPower or 0) + 12
 			end
+			sharedData.healthBonus = (sharedData.healthBonus or 0) + 300
 			sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 5
 		end,
-		levelDefs = {
-			[0] = {
-				morphBuildPower = 10,
-				morphBaseCost = 0,
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynsupport0"].id
-				end,
-				upgradeSlots = {},
-			},
-			[1] = {
-				morphBuildPower = 10,
-				morphBaseCost = morphCosts[1],
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynsupport1_" .. GetSupportCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.commweapon_beamlaser,
-						slotAllows = "basic_weapon",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-			[2] = {
-				morphBuildPower = 15,
-				morphBaseCost = morphCosts[2] * COST_MULT,
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynsupport2_" .. GetSupportCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-			[3] = {
-				morphBuildPower = 20,
-				morphBaseCost = morphCosts[3] * COST_MULT,
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynsupport3_" .. GetSupportCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.commweapon_beamlaser,
-						slotAllows = "adv_weapon",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-			[4] = {
-				morphBuildPower = 25,
-				morphBaseCost = morphCosts[4],
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynsupport4_" .. GetSupportCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-			[5] = {
-				morphBuildPower = 30,
-				morphBaseCost = morphCosts[5],
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynsupport5_" .. GetSupportCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-		}
+		levelDefs = levelDefGenerator("dynsupport", GetSupportCloneModulesString)
 	},
 	{
 		name = "assault",
 		humanName = "Guardian",
 		baseUnitDef = UnitDefNames and UnitDefNames["dynassault0"].id,
 		extraLevelCostFunction = extraLevelCostFunction,
-		maxNormalLevel = 5,
+		maxNormalLevel = maxCommLevel,
 		secondPeashooter = true,
 		chassisApplicationFunction = function (level, modules, sharedData)
+			Spring.Echo("Apply level-up function to Guardian lvl " .. level .. ".")
 			sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 5
 			if level < 2 then
 				sharedData.drones = (sharedData.drones or 0) + 1
@@ -1367,235 +1134,38 @@ local chassisDefs = {
 			if level >= 4 then
 				sharedData.droneheavyslows = (sharedData.droneheavyslows or 0) + 1
 			end
-			sharedData.healthBonus = (sharedData.healthBonus or 0) + 600 * level
+			sharedData.healthBonus = (sharedData.healthBonus or 0) + 400 * level  -- armor added faster than linear
+			sharedData.damageMult = (sharedData.damageMult or 1) + 0.01
+			sharedData.rangeMult = (sharedData.rangeMult or 1) + 0.01
 		end,
-		levelDefs = {
-			[0] = {
-				morphBuildPower = 10,
-				morphBaseCost = 0,
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynassault0"].id
-				end,
-				upgradeSlots = {},
-			},
-			[1] = {
-				morphBuildPower = 10,
-				morphBaseCost = morphCosts[1],
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynassault1_" .. GetAssaultCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.commweapon_beamlaser,
-						slotAllows = "basic_weapon",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-			[2] = {
-				morphBuildPower = 15,
-				morphBaseCost = morphCosts[2] * COST_MULT,
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynassault2_" .. GetAssaultCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-			[3] = {
-				morphBuildPower = 20,
-				morphBaseCost = morphCosts[3] * COST_MULT,
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynassault3_" .. GetAssaultCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.commweapon_beamlaser,
-						slotAllows = {"adv_weapon", "basic_weapon"},
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-			[4] = {
-				morphBuildPower = 25,
-				morphBaseCost = morphCosts[4] * COST_MULT,
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynassault4_" .. GetAssaultCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-			[5] = {
-				morphBuildPower = 30,
-				morphBaseCost = morphCosts[5] * COST_MULT,
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynassault5_" .. GetAssaultCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-		}
+		levelDefs = levelDefGenerator("dynassault", GetAssaultCloneModulesString)
+	},
+	{
+		name = "riot",
+		humanName = "Riot",
+		baseUnitDef = UnitDefNames and UnitDefNames["dynriot0"].id,
+		extraLevelCostFunction = extraLevelCostFunction,
+		maxNormalLevel = maxCommLevel,
+		secondPeashooter = true,
+		chassisApplicationFunction = function (level, modules, sharedData)
+			Spring.Echo("Apply level-up function to Riot (comm) lvl " .. level .. ".")
+			sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 5
+		end,
+		levelDefs = levelDefGenerator("dynriot", GetRiotCloneModulesString)
 	},
 	{
 		name = "knight",
 		humanName = "Knight",
 		baseUnitDef = UnitDefNames and UnitDefNames["dynknight0"].id,
 		extraLevelCostFunction = extraLevelCostFunction,
-		maxNormalLevel = 5,
-		notSelectable = (Spring.GetModOptions().campaign_chassis ~= "1"),
+		maxNormalLevel = maxCommLevel,
+		--notSelectable = (Spring.GetModOptions().campaign_chassis ~= "1"),
 		secondPeashooter = true,
 		chassisApplicationFunction = function (level, modules, sharedData)
+			Spring.Echo("Apply level-up function to Knight (comm) lvl " .. level .. ".")
 			sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 5
 		end,
-		levelDefs = {
-			[0] = {
-				morphBuildPower = 10,
-				morphBaseCost = 0,
-				morphUnitDefFunction = function(modulesByDefID)
-					-- Level 1 is the same as level 0 in stats and has support for clone modules (such as shield).
-					return UnitDefNames["dynknight1_" .. GetKnightCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {},
-			},
-			[1] = {
-				morphBuildPower = 10,
-				morphBaseCost = morphCosts[1],
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynknight1_" .. GetKnightCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.commweapon_beamlaser,
-						slotAllows = "basic_weapon",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-			[2] = {
-				morphBuildPower = 15,
-				morphBaseCost = morphCosts[2] * COST_MULT,
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynknight2_" .. GetKnightCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-			[3] = {
-				morphBuildPower = 20,
-				morphBaseCost = morphCosts[3] * COST_MULT,
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynknight3_" .. GetKnightCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.commweapon_beamlaser,
-						slotAllows = {"adv_weapon", "basic_weapon"},
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-			[4] = {
-				morphBuildPower = 25,
-				morphBaseCost = morphCosts[4] * COST_MULT,
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynknight4_" .. GetKnightCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-			[5] = {
-				morphBuildPower = 30,
-				morphBaseCost = morphCosts[5] * COST_MULT,
-				morphUnitDefFunction = function(modulesByDefID)
-					return UnitDefNames["dynknight5_" .. GetKnightCloneModulesString(modulesByDefID)].id
-				end,
-				upgradeSlots = {
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-					{
-						defaultModule = moduleDefNames.nullmodule,
-						slotAllows = "module",
-					},
-				},
-			},
-		}
+		levelDefs = levelDefGenerator("dynknight", GetKnightCloneModulesString)
 	},
 }
 
