@@ -25,7 +25,7 @@ for profileID, data in pairs( WG.ModularCommAPI.GetPlayerCommProfiles(Spring.Get
 	commDataOrdered[numComms] = data
 	commDataOrdered[numComms].profileID = profileID
 end
---Spring.Echo("wololo", "Player " .. Spring.GetMyPlayerID() .. " has " .. numComms .. " comms")
+Spring.Echo("Player " .. Spring.GetMyPlayerID() .. " has " .. numComms .. " comms.")
 table.sort(commDataOrdered, function(a,b) return a.profileID < b.profileID end)
 
 local chassisImages = {
@@ -40,7 +40,8 @@ local chassisImages = {
 	support = "LuaUI/Images/startup_info_selector/chassis_commsupport.png",
 	assault = "LuaUI/Images/startup_info_selector/chassis_benzcom.png",
 	strike = "LuaUI/Images/startup_info_selector/chassis_commstrike.png",
-	knight = "LuaUI/Images/startup_info_selector/chassis_cremcom.png"
+	knight = "LuaUI/Images/startup_info_selector/chassis_cremcom.png",
+	riot = "LuaUI/Images/startup_info_selector/chassis_commriot.png",
 }
 
 local moduleDefs, emptyModules, chassisDefs, upgradeUtilities, chassisDefByBaseDef, moduleDefNames, chassisDefNames = VFS.Include("LuaRules/Configs/dynamic_comm_defs.lua")
@@ -90,6 +91,7 @@ local function GetCommSelectTemplate(num, data)
 		trainer = string.find(commProfileID, "trainer") ~= nil,	-- FIXME should probably be in the def table
 	}
 	
+	Spring.Echo("Have a startup comm " .. (option.name or '(nil)') .. " / " .. (option.unitname or '(nil)') .. ".")
 	return option
 end
 
