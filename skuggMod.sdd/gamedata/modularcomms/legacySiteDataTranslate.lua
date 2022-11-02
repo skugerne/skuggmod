@@ -13,6 +13,7 @@ local legacyToDyncommChassisMap = {
 	guardian = "assault",
 	engineer = "support",
 	knight = "knight",
+	riot = "riot",
 }
 
 local function TranslateModoption(legacy)

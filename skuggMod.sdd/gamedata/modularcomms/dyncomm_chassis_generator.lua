@@ -55,6 +55,27 @@ local chassisDefs = {
 		}
 	},
 	{
+		name = "dynriot1",
+		weapons = {
+			"commweapon_peashooter",
+			"commweapon_beamlaser",
+			"commweapon_shotgun",
+			"commweapon_shotgun_disrupt",
+			"commweapon_lparticlebeam",
+			"commweapon_disruptor",
+			"commweapon_hparticlebeam",
+			"commweapon_heavy_disruptor",
+			"commweapon_lightninggun",
+			"commweapon_lightninggun_improved",
+			"commweapon_missilelauncher",
+			"commweapon_shockrifle",
+			"commweapon_multistunner",
+			"commweapon_multistunner_improved",
+			"commweapon_disruptorbomb",
+			-- Space for shield
+		}
+	},
+	{
 		name = "dynsupport1",
 		weapons = {
 			"commweapon_peashooter",
@@ -160,6 +181,7 @@ local statOverrides = {
 for i = 1, #chassisDefs do
 	local name = chassisDefs[i].name
 	local unitDef = UnitDefs[name]
+	Spring.Log("dyncomm_chassis_generator.lua", LOG.WARNING, "processing a chassis " .. name)
 	
 	for wreckName, wreckDef in pairs(unitDef.featuredefs) do
 		wreckDef.metal = commanderCost * (wreckName == "heap" and 0.2 or 0.4)
