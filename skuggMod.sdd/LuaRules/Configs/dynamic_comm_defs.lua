@@ -119,6 +119,68 @@ local moduleDefs = {
 		end
 	},
 	{
+		name = "commweapon_snoop",
+		humanName = "snooper",
+		description = "Snooper: Good for shooting at stuff.",
+		image = moduleImagePath .. "commweapon_snoop.png",
+		limit = 2,
+		cost = 5 * COST_MULT,
+		requireChassis = {"recon", "support","riot"},
+		requireLevel = 1,
+		slotType = "basic_weapon",
+		applicationFunction = function (modules, sharedData)
+			if sharedData.noMoreWeapons then
+				return
+			end
+			if not sharedData.weapon1 then
+				sharedData.weapon1 = "commweapon_snoop"
+			else
+				sharedData.weapon2 = "commweapon_snoop"
+			end
+		end
+	},
+	{
+		name = "commweapon_tufer",
+		humanName = "TuferMG",
+		description = "TuferMG: Good at annoying paladins",
+		image = moduleImagePath .. "commweapon_tufer.png",
+		limit = 2,
+		cost = 5 * COST_MULT,
+		requireChassis = {"recon","support", "knight"},
+		requireLevel = 1,
+		slotType = "basic_weapon",
+		applicationFunction = function (modules, sharedData)
+			if sharedData.noMoreWeapons then
+				return
+			end
+			if not sharedData.weapon1 then
+				sharedData.weapon1 = "commweapon_tufer"
+			else
+				sharedData.weapon2 = "commweapon_tufer"
+			end
+		end
+	},
+	{
+		name = "commweapon_lazor",
+		humanName = "Lazor",
+		description = "Lazor: Good for deep-frying mean robots",
+		image = moduleImagePath .. "commweapon_lazor.png",
+		limit = 1,
+		cost = 5 * COST_MULT,
+		requireChassis = {"recon"},
+		requireLevel = 1,
+		slotType = "basic_weapon",
+		applicationFunction = function (modules, sharedData)
+			if sharedData.noMoreWeapons then
+				return
+			end
+			if not sharedData.weapon1 then
+				sharedData.weapon1 = "commweapon_lazor"
+				sharedData.weapon2 = "commweapon_lazor"
+			end
+		end
+	},
+	{
 		name = "commweapon_heatray",
 		humanName = "Heatray",
 		description = "Heatray: Rapidly melts anything at short range; steadily loses all of its damage over distance",
@@ -161,28 +223,28 @@ local moduleDefs = {
 			end
 		end
 	},
-	--{
-	--	name = "commweapon_hpartillery",
-	--	humanName = "Plasma Artillery",
-	--	description = "Plasma Artillery",
-	--	image = moduleImagePath .. "commweapon_assaultcannon.png",
-	--	limit = 2,
-	--	cost = 300 * COST_MULT,
-	--	requireChassis = {"assault"},
-	--	requireLevel = 3,
-	--	slotType = "adv_weapon",
-	--	applicationFunction = function (modules, sharedData)
-	--		if sharedData.noMoreWeapons then
-	--			return
-	--		end
-	--		local weaponName = (modules[moduleDefNames.weaponmod_napalm_warhead] and "commweapon_hpartillery_napalm") or "commweapon_hpartillery"
-	--		if not sharedData.weapon1 then
-	--			sharedData.weapon1 = weaponName
-	--		else
-	--			sharedData.weapon2 = weaponName
-	--		end
-	--	end
-	--},
+	{
+		name = "commweapon_hpartillery",
+		humanName = "Plasma Artillery",
+		description = "Plasma Artillery",
+		image = moduleImagePath .. "commweapon_assaultcannon.png",
+		limit = 2,
+		cost = 300 * COST_MULT,
+		requireChassis = {"assault"},
+		requireLevel = 3,
+		slotType = "adv_weapon",
+		applicationFunction = function (modules, sharedData)
+			if sharedData.noMoreWeapons then
+				return
+			end
+			local weaponName = (modules[moduleDefNames.weaponmod_napalm_warhead] and "commweapon_hpartillery_napalm") or "commweapon_hpartillery"
+			if not sharedData.weapon1 then
+				sharedData.weapon1 = weaponName
+			else
+				sharedData.weapon2 = weaponName
+			end
+		end
+	},
 	{
 		name = "commweapon_lightninggun",
 		humanName = "Lightning Rifle",
@@ -228,6 +290,27 @@ local moduleDefs = {
 		end
 	},
 	{
+		name = "commweapon_pewpew",
+		humanName = "pew pew gun",
+		description = "pew pew pew",
+		image = moduleImagePath .. "commweapon_peew.png",
+		limit = 1,
+		cost = 5 * COST_MULT,
+		requireChassis = {"support", "strike", "knight","assault", "recon"},
+		requireLevel = 1,
+		slotType = "basic_weapon",
+		applicationFunction = function (modules, sharedData)
+			if sharedData.noMoreWeapons then
+				return
+			end
+			if not sharedData.weapon1 then
+				sharedData.weapon1 = "commweapon_pewpew"
+			else
+				sharedData.weapon2 = "commweapon_pewpew"
+			end
+		end
+	},
+	{
 		name = "commweapon_missilelauncher",
 		humanName = "Missile Launcher",
 		description = "Missile Launcher: Lightweight seeker missile with good range",
@@ -247,7 +330,51 @@ local moduleDefs = {
 				sharedData.weapon2 = "commweapon_missilelauncher"
 			end
 		end
+	
 	},
+	{
+		name = "commweapon_shiny",
+		humanName = "shiny Launcher",
+		description = "shiny Launcher: so shiny!",
+		image = moduleImagePath .. "commweapon_shiny.png",
+		limit = 2,
+		cost = 5 * COST_MULT,
+		requireChassis = {"support", "strike", "knight","recon","assault"},
+		requireLevel = 1,
+		slotType = "basic_weapon",
+		applicationFunction = function (modules, sharedData)
+			if sharedData.noMoreWeapons then
+				return
+			end
+			if not sharedData.weapon1 then
+				sharedData.weapon1 = "commweapon_shiny"
+			else
+				sharedData.weapon2 = "commweapon_shiny"
+			end
+		end
+	},
+	--{
+	--	name = "commweapon_reconrifle",
+	--	humanName = "Recon rifle",
+	--	description = "Long range support weapon",
+	--	image = moduleImagePath .. "commweapon_missilelauncher.png",
+	--	limit = 1,
+	--	cost = 5 * COST_MULT,
+	--	requireChassis = {"recon"},
+	--	requireLevel = 1,
+	--	slotType = "basic_weapon",
+	--	applicationFunction = function (modules, sharedData)
+	--		if sharedData.noMoreWeapons then
+	--			return
+	--		end
+	--		if not sharedData.weapon1 then
+	--			sharedData.weapon1 = "commweapon_reconrifle"
+	--		else
+	--			sharedData.weapon2 = "commweapon_reconrifle"
+	--		end
+	--	end
+	--
+	--},
 	{
 		name = "commweapon_riotcannon",
 		humanName = "Riot Cannon",
@@ -277,7 +404,7 @@ local moduleDefs = {
 		image = moduleImagePath .. "commweapon_rocketlauncher.png",
 		limit = 2,
 		cost = 5 * COST_MULT,
-		requireChassis = {"assault", "knight"},
+		requireChassis = {"assault", "knight","recon","strike","support"},
 		requireLevel = 1,
 		slotType = "basic_weapon",
 		applicationFunction = function (modules, sharedData)
@@ -299,7 +426,7 @@ local moduleDefs = {
 		image = moduleImagePath .. "commweapon_shotgun.png",
 		limit = 2,
 		cost = 5 * COST_MULT,
-		requireChassis = {"recon", "support", "strike", "knight"},
+		requireChassis = {"recon", "support", "strike", "knight","assault"},
 		requireLevel = 1,
 		slotType = "basic_weapon",
 		applicationFunction = function (modules, sharedData)
@@ -321,7 +448,7 @@ local moduleDefs = {
 		image = moduleImagePath .. "conversion_hparticlebeam.png",
 		limit = 1,
 		cost = 100 * COST_MULT,
-		requireChassis = {"support", "knight"},
+		requireChassis = {"support", "knight","recon","strike","assault"},
 		requireLevel = 1,
 		slotType = "adv_weapon",
 		applicationFunction = function (modules, sharedData)
@@ -341,7 +468,7 @@ local moduleDefs = {
 		image = moduleImagePath .. "conversion_shockrifle.png",
 		limit = 1,
 		cost = 100 * COST_MULT,
-		requireChassis = {"support", "knight"},
+		requireChassis = {"support", "knight","strike","recon","assault"},
 		requireLevel = 1,
 		slotType = "adv_weapon",
 		applicationFunction = function (modules, sharedData)
@@ -360,7 +487,7 @@ local moduleDefs = {
 		image = moduleImagePath .. "commweapon_clusterbomb.png",
 		limit = 1,
 		cost = 100 * COST_MULT,
-		requireChassis = {"recon", "assault", "knight"},
+		requireChassis = {"recon", "assault", "knight","support","rekon"},
 		requireLevel = 3,
 		slotType = "adv_weapon",
 		applicationFunction = function (modules, sharedData)
@@ -381,7 +508,7 @@ local moduleDefs = {
 		image = moduleImagePath .. "commweapon_concussion.png",
 		limit = 1,
 		cost = 100 * COST_MULT,
-		requireChassis = {"recon", "knight"},
+		requireChassis = {"recon", "knight","support","assault","strike"},
 		requireLevel = 3,
 		slotType = "adv_weapon",
 		applicationFunction = function (modules, sharedData)
@@ -423,7 +550,7 @@ local moduleDefs = {
 		image = moduleImagePath .. "commweapon_disruptorbomb.png",
 		limit = 1,
 		cost = 100 * COST_MULT,
-		requireChassis = {"recon", "support", "strike", "knight"},
+		requireChassis = {"recon", "support", "strike", "knight","assault"},
 		requireLevel = 3,
 		slotType = "adv_weapon",
 		applicationFunction = function (modules, sharedData)
@@ -466,7 +593,7 @@ local moduleDefs = {
 		image = moduleImagePath .. "commweapon_napalmgrenade.png",
 		limit = 1,
 		cost = 100 * COST_MULT,
-		requireChassis = {"assault", "recon", "knight"},
+		requireChassis = {"assault", "recon", "knight", "strike"},
 		requireLevel = 3,
 		slotType = "adv_weapon",
 		applicationFunction = function (modules, sharedData)
@@ -487,7 +614,7 @@ local moduleDefs = {
 		image = moduleImagePath .. "commweapon_slamrocket.png",
 		limit = 1,
 		cost = 100 * COST_MULT,
-		requireChassis = {"assault", "knight"},
+		requireChassis = {"assault", "knight","recon","srike"},
 		requireLevel = 3,
 		slotType = "adv_weapon",
 		applicationFunction = function (modules, sharedData)
@@ -540,7 +667,7 @@ local moduleDefs = {
 		image = moduleImagePath .. "module_areashield.png",
 		limit = 1,
 		cost = 250 * COST_MULT,
-		requireChassis = {"assault", "support", "knight"},
+		requireChassis = {"assault", "support", "knight","recon","strike"},
 		requireOneOf = {"commweapon_personal_shield"},
 		prohibitingModules = {"module_personal_cloak"},
 		requireLevel = 3,
@@ -556,7 +683,7 @@ local moduleDefs = {
 		image = moduleImagePath .. "weaponmod_napalm_warhead.png",
 		limit = 1,
 		cost = 350 * COST_MULT,
-		requireChassis = {"assault", "knight"},
+		requireChassis = {"assault", "knight","support","recon"},
 		requireOneOf = {"commweapon_rocketlauncher", "commweapon_hpartillery", "commweapon_riotcannon"},
 		requireLevel = 2,
 		slotType = "module",
@@ -568,7 +695,7 @@ local moduleDefs = {
 		image = moduleImagePath .. "weaponmod_disruptor_ammo.png",
 		limit = 1,
 		cost = 300 * COST_MULT,
-		requireChassis = {"strike", "recon", "support", "knight"},
+		requireChassis = {"strike", "recon", "support", "knight","assault"},
 		requireOneOf = {"commweapon_heavymachinegun", "commweapon_shotgun", "commweapon_hparticlebeam", "commweapon_lparticlebeam"},
 		requireLevel = 2,
 		slotType = "module",
@@ -580,7 +707,7 @@ local moduleDefs = {
 		image = moduleImagePath .. "weaponmod_stun_booster.png",
 		limit = 1,
 		cost = 300 * COST_MULT,
-		requireChassis = {"support", "strike", "recon", "knight"},
+		requireChassis = {"support", "strike", "recon", "knight","assault"},
 		requireOneOf = {"commweapon_lightninggun", "commweapon_multistunner"},
 		requireLevel = 2,
 		slotType = "module",
@@ -683,7 +810,7 @@ local moduleDefs = {
 		image = moduleImagePath .. "module_jumpjet.png",
 		limit = 1,
 		cost = 400 * COST_MULT,
-		requireChassis = {"knight"},
+		requireChassis = {"knight","strike"},
 		requireLevel = 3,
 		slotType = "module",
 		applicationFunction = function (modules, sharedData)
@@ -697,7 +824,7 @@ local moduleDefs = {
 		humanName = "Companion Drone",
 		description = "Companion Drone - Commander spawns protective drones. Limit: 8",
 		image = moduleImagePath .. "module_companion_drone.png",
-		limit = 8,
+		limit = 15,
 		cost = 200 * COST_MULT,
 		requireLevel = 2,
 		slotType = "module",
@@ -710,7 +837,7 @@ local moduleDefs = {
 		humanName = "Battle Drone",
 		description = "Battle Drone - Commander spawns heavy drones. Limit: 8, Requires Companion Drone",
 		image = moduleImagePath .. "module_battle_drone.png",
-		limit = 8,
+		limit = 15,
 		cost = 350 * COST_MULT,
 		requireChassis = {"assault", "support", "knight"},
 		requireOneOf = {"module_companion_drone"},

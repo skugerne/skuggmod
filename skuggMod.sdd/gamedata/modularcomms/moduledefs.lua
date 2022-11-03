@@ -920,7 +920,9 @@ end
 
 local weaponsList = VFS.DirList("gamedata/modularcomms/weapons", "*.lua") or {}
 for i=1,#weaponsList do
+	Spring.Echo("Load " .. weaponsList[i])
 	local name, array = VFS.Include(weaponsList[i])
+	Spring.Echo("Lua OK for " .. weaponsList[i])
 	weapons[name] = lowerkeys(array)
 	
 	local weapon = weapons[name]
@@ -938,5 +940,7 @@ for i=1,#weaponsList do
 		end
 	end
 end
+
+Spring.Echo("End of moduledefs.lua!")
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------

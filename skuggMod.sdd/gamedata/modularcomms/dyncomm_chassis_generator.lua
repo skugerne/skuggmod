@@ -3,18 +3,17 @@ local chassisDefs = {
 		name = "dynstrike1",
 		weapons = {
 			"commweapon_peashooter",
-			"commweapon_missilelauncher", -- 415
-			"commweapon_missilelauncher", -- 415
+			"commweapon_pewpew", -- 415
 			"commweapon_beamlaser",
 			"commweapon_lparticlebeam",
 			"commweapon_shotgun",
 			"commweapon_shotgun_disrupt",
-			"commweapon_disruptor",
+			--"commweapon_disruptor",
 			"commweapon_heavymachinegun",
 			"commweapon_heavymachinegun_disrupt",
 			"commweapon_lightninggun",
 			"commweapon_lightninggun_improved",
-			"commweapon_peashooter",
+			--"commweapon_peashooter",
 			"commweapon_beamlaser",
 			"commweapon_lparticlebeam",
 			"commweapon_shotgun",
@@ -28,6 +27,12 @@ local chassisDefs = {
 			"commweapon_multistunner_improved",
 			"commweapon_disruptorbomb",
 			"commweapon_disintegrator",
+			"commweapon_napalmgrenade",
+			"commweapon_concussion",
+			"commweapon_clusterbomb",
+			"commweapon_hparticlebeam",
+			"commweapon_shiny",
+			"commweapon_shiny",
 			-- Space for shield
 		}
 	},
@@ -51,6 +56,15 @@ local chassisDefs = {
 			"commweapon_clusterbomb",
 			"commweapon_disruptorbomb",
 			"commweapon_concussion",
+			"commweapon_slamrocket",
+			"commweapon_shockrifle",
+			"commweapon_hparticlebeam",
+			"commweapon_rocketlauncher",
+			"commweapon_pewpew", -- 415
+			"commweapon_lazor",
+			"commweapon_shiny",
+			"commweapon_snoop",
+			--"commweapon_reconrifle",
 			-- Space for shield
 		}
 	},
@@ -93,7 +107,16 @@ local chassisDefs = {
 			"commweapon_multistunner",
 			"commweapon_multistunner_improved",
 			"commweapon_disruptorbomb",
+			"commweapon_slamrocket",
+			"commweapon_concussion",
+			"commweapon_clusterbomb",
+			"commweapon_rocketlauncher",
+			"commweapon_pewpew", -- 415
+			"commweapon_shiny",
+			"commweapon_tufer",
+			"commweapon_snoop",
 			-- Space for shield
+
 		}
 	},
 	{
@@ -101,9 +124,9 @@ local chassisDefs = {
 		weapons = {
 			"commweapon_peashooter",
 			"commweapon_rocketlauncher", -- 430
-			"commweapon_rocketlauncher_napalm", -- 430
+			"commweapon_rocketlauncher_napalm",
 			"commweapon_rocketlauncher", -- 430
-			"commweapon_rocketlauncher_napalm", -- 430
+			"commweapon_rocketlauncher_napalm",
 			"commweapon_beamlaser",
 			"commweapon_heatray",
 			"commweapon_heavymachinegun",
@@ -123,6 +146,14 @@ local chassisDefs = {
 			"commweapon_napalmgrenade",
 			"commweapon_slamrocket",
 			"commweapon_clusterbomb",
+			"commweapon_disruptorbomb",
+			"commweapon_concussion",
+			"commweapon_hparticlebeam",
+			"commweapon_shotgun",
+			"commweapon_pewpew", -- 415
+			"commweapon_shiny",
+			"commweapon_pewpew", -- 415
+			"commweapon_shiny",
 			-- Space for shield
 		}
 	},
