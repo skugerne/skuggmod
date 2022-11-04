@@ -1129,7 +1129,9 @@ local function levelDefGenerator(commname, cloneModulesStringFunc)
 			morphBuildPower = 5 + math.ceil(i/2)*5,
 			morphBaseCost = morphCosts[i],
 			morphUnitDefFunction = function(modulesByDefID)
-				return UnitDefNames[commname .. math.ceil(i/2) .. "_" .. cloneModulesStringFunc(modulesByDefID)].id
+				local oneUnitDefName = commname .. math.ceil(i/2) .. "_" .. cloneModulesStringFunc(modulesByDefID)
+				Spring.Echo("Get ID of unit def by name: " .. oneUnitDefName .. ".")
+				return UnitDefNames[oneUnitDefName].id
 			end
 		}
 
@@ -1175,6 +1177,20 @@ local function levelDefGenerator(commname, cloneModulesStringFunc)
 	return res
 end
 
+local function starts_with(str, start)
+	return str:sub(1, #start) == start
+ end
+
+if UnitDefNames then
+	for name, ud in pairs(UnitDefNames) do
+		if starts_with(name, "dyn") then
+			Spring.Echo("Have a unit def named: " .. name .. ".")
+		end
+	end
+else
+	Spring.Echo("The var UnitDefNames is not defined when dynamic_comm_defs.lua is being loaded.")
+end
+
 local chassisDefs = {
 	{
 		name = "strike",
@@ -1196,9 +1212,9 @@ local chassisDefs = {
 			elseif level >= 5 then
 				sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 35
 			end
-			sharedData.speedMod = (sharedData.speedMod or 0) + 1
-			sharedData.healthBonus = (sharedData.healthBonus or 0) + 200
-			sharedData.damageMult = (sharedData.damageMult or 1) + 0.025
+			sharedData.speedMod = (sharedData.speedMod or 0) + 1 * level
+			sharedData.healthBonus = (sharedData.healthBonus or 0) + 200 * level
+			sharedData.damageMult = (sharedData.damageMult or 1) + 0.025 * level
 		end,
 		levelDefs = levelDefGenerator("dynstrike", GetStrikeCloneModulesString)
 	},
@@ -1210,10 +1226,10 @@ local chassisDefs = {
 		maxNormalLevel = maxCommLevel,
 		chassisApplicationFunction = function (level, modules, sharedData)
 			Spring.Echo("Apply level-up function to Recon lvl " .. level .. ".")
-			sharedData.speedMod = (sharedData.speedMod or 0) + 1
-			sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 5
-			sharedData.healthBonus = (sharedData.healthBonus or 0) + 100
-			sharedData.rangeMult = (sharedData.rangeMult or 1) + 0.02
+			sharedData.speedMod = (sharedData.speedMod or 0) + 1 * level
+			sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 5 * level
+			sharedData.healthBonus = (sharedData.healthBonus or 0) + 100 * level
+			sharedData.rangeMult = (sharedData.rangeMult or 1) + 0.02 * level
 		end,
 		levelDefs = levelDefGenerator("dynrecon", GetReconCloneModulesString)
 	},
@@ -1236,8 +1252,8 @@ local chassisDefs = {
 			elseif level >= 5 then
 				sharedData.bonusBuildPower = (sharedData.bonusBuildPower or 0) + 12
 			end
-			sharedData.healthBonus = (sharedData.healthBonus or 0) + 300
-			sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 5
+			sharedData.healthBonus = (sharedData.healthBonus or 0) + 300 * level
+			sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 5 * level
 		end,
 		levelDefs = levelDefGenerator("dynsupport", GetSupportCloneModulesString)
 	},
@@ -1261,9 +1277,9 @@ local chassisDefs = {
 			if level >= 4 then
 				sharedData.droneheavyslows = (sharedData.droneheavyslows or 0) + 1
 			end
-			sharedData.healthBonus = (sharedData.healthBonus or 0) + 400 * level  -- armor added faster than linear
-			sharedData.damageMult = (sharedData.damageMult or 1) + 0.01
-			sharedData.rangeMult = (sharedData.rangeMult or 1) + 0.01
+			sharedData.healthBonus = (sharedData.healthBonus or 0) + 400 * level
+			sharedData.damageMult = (sharedData.damageMult or 1) + 0.01 * level
+			sharedData.rangeMult = (sharedData.rangeMult or 1) + 0.01 * level
 		end,
 		levelDefs = levelDefGenerator("dynassault", GetAssaultCloneModulesString)
 	},
@@ -1276,7 +1292,7 @@ local chassisDefs = {
 		secondPeashooter = true,
 		chassisApplicationFunction = function (level, modules, sharedData)
 			Spring.Echo("Apply level-up function to Riot (comm) lvl " .. level .. ".")
-			sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 5
+			sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 5 * level
 		end,
 		levelDefs = levelDefGenerator("dynriot", GetRiotCloneModulesString)
 	},
@@ -1290,7 +1306,7 @@ local chassisDefs = {
 		secondPeashooter = true,
 		chassisApplicationFunction = function (level, modules, sharedData)
 			Spring.Echo("Apply level-up function to Knight (comm) lvl " .. level .. ".")
-			sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 5
+			sharedData.autorepairRate = (sharedData.autorepairRate or 0) + 5 * level
 		end,
 		levelDefs = levelDefGenerator("dynknight", GetKnightCloneModulesString)
 	},

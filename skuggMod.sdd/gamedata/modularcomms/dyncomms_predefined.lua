@@ -2,66 +2,57 @@ local ret = {
 	dyntrainer_strike = {
 		name = "Strike",
 		chassis = "strike",
-		modules = { -- all null because nabs want to personalize
+		modules = { -- all null means no default selections
 			{"nullbasicweapon", "nullmodule"},
 			{"nullmodule", "nullmodule"},
 			{"nulladvweapon", "nullmodule", "nullmodule"},
 			{"nullmodule", "nullmodule", "nullmodule"},
 			{"nullmodule", "nullmodule", "nullmodule"},
-		},
-		--decorations = {"banner_overhead"},
-		--images = {overhead = "184"}
+		}
 	},
 	dyntrainer_riot = {
 		name = "Riot",
 		chassis = "riot",
-		modules = { -- all null because nabs want to personalize
+		modules = { -- all null means no default selections
 			{"nullbasicweapon", "nullmodule"},
 			{"nullbasicweapon", "nullmodule"},
 			{"nullmodule", "nullmodule", "nullmodule"},
 			{"nullmodule", "nullmodule", "nullmodule"},
 			{"nullmodule", "nullmodule", "nullmodule"},
-		},
-		--decorations = {"banner_overhead"},
-		--images = {overhead = "184"}
+		}
 	},
 	dyntrainer_recon = {
 		name = "Recon",
 		chassis = "recon",
-		modules = { -- all null because nabs want to personalize
+		modules = { -- all null means no default selections
 			{"nullbasicweapon", "nullmodule"},
 			{"nullmodule", "nullmodule"},
 			{"nulladvweapon", "nullmodule", "nullmodule"},
 			{"nullmodule", "nullmodule", "nullmodule"},
 			{"nullmodule", "nullmodule", "nullmodule"},
-		},
-		--decorations = {"skin_recon_dark", "banner_overhead"},
-		--images = {overhead = "184"}
+		}
 	},
 	dyntrainer_support = {
 		name = "Engineer",
 		chassis = "support",
-		modules = { -- all null because nabs want to personalize
+		modules = { -- all null means no default selections
 			{"nullbasicweapon", "nullmodule"},
 			{"nullmodule", "nullmodule"},
 			{"nulladvweapon", "nullmodule", "nullmodule"},
 			{"nullmodule", "nullmodule", "nullmodule"},
 			{"nullmodule", "nullmodule", "nullmodule"},
-		},
-		--decorations = {"skin_support_hotrod"},
+		}
 	},
 	dyntrainer_assault = {
 		name = "Guardian",
 		chassis = "assault",
-		modules = { -- all null because nabs want to personalize
+		modules = { -- all null means no default selections
 			{"nullbasicweapon", "nullmodule"},
 			{"nullmodule", "nullmodule"},
 			{"nulladvweapon", "nullmodule", "nullmodule"},
 			{"nullmodule", "nullmodule", "nullmodule"},
 			{"nullmodule", "nullmodule", "nullmodule"},
-		},
-		--decorations = {"banner_overhead"},
-		--images = {overhead = "166"}
+		}
 	},
 	dynhub_strike = {
 		name = "Strike Support",

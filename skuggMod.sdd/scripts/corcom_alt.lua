@@ -92,18 +92,6 @@ for index, weapon in pairs(wepTable) do
 	end
 end
 
-local function GetOKP()
-	while Spring.GetUnitRulesParam(unitID, "comm_weapon_name_1") == nil do
-		Sleep(33)
-	end
-	okpconfig = dyncomm.GetOKPConfig()
-	spooling1, spooling2 = dyncomm.SetupSpooling()
-	--Spring.Echo("Use OKP: " .. tostring(okpconfig[1].useokp or okpconfig[2].useokp))
-	if okpconfig[1].useokp or okpconfig[2].useokp then
-		GG.OverkillPrevention_ForceAdd(unitID)
-	end
-end
-
 --------------------------------------------------------------------------------
 -- funcs
 --------------------------------------------------------------------------------
@@ -166,7 +154,6 @@ function script.Create()
 	
 	StartThread(GG.Script.SmokeUnit, unitID, smokePiece)
 	Spring.SetUnitNanoPieces(unitID, nanoPieces)
-	StartThread(GetOKP)
 end
 
 function script.StartMoving()

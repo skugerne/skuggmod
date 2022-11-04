@@ -244,6 +244,11 @@ MakeCommanderChassisClones("dynknight",
 	{"module_personal_shield", "module_areashield", "module_resurrect", "module_jumpjet"}
 )
 
+MakeCommanderChassisClones("dynriot",
+	{{0, 0}, {1, 0}, {1, 1}, {1, 1}, {1, 1}},
+	{"module_personal_shield", "module_areashield"}
+)
+
 --[[
 for name,stats in pairs(comms) do
 	table.insert(stats.modules, "module_econ")
